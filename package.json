@@ -1,0 +1,202 @@
+{
+  "name": "vscode-context-tools",
+  "displayName": "Context Tools: Copy Files, Tree & Problems",
+  "description": "Copy current file/selection/open editors as fenced blocks, project tree, and diagnostics (Problems). Optimized for pasting into LLM/chat.",
+  "publisher": "lucashenriquediniz",
+  "version": "0.0.9",
+  "icon": "images/icon.png",
+  "galleryBanner": {
+    "color": "#0f172a",
+    "theme": "dark"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LucasHenriqueDiniz/vscode-context-tools.git"
+  },
+  "bugs": {
+    "url": "https://github.com/LucasHenriqueDiniz/vscode-context-tools/issues"
+  },
+  "license": "MIT",
+  "keywords": [
+    "context",
+    "copy",
+    "fence",
+    "PATH header",
+    "project tree",
+    "problems",
+    "errors",
+    "diagnostics",
+    "chatgpt",
+    "llm",
+    "paste"
+  ],
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "extensionKind": ["ui"],
+  "capabilities": {
+    "untrustedWorkspaces": { "supported": true },
+    "virtualWorkspaces": true
+  },
+  "categories": ["Other"],
+  "contributes": {
+    "commands": [
+      { "command": "ctxtools.copyCurrentFileAsFence", "title": "Context Tools: Copy Current File" },
+      { "command": "ctxtools.copySelectionAsFence", "title": "Context Tools: Copy Selection" },
+      { "command": "ctxtools.copyAllOpenEditorsAsFences", "title": "Context Tools: Copy Open Editors" },
+      { "command": "ctxtools.copySelectedFilesAsFences", "title": "Context Tools: Copy Selected Files" },
+      { "command": "ctxtools.copyProjectTree", "title": "Context Tools: Copy Project Tree" },
+      { "command": "ctxtools.copyMarkdownDocSummary", "title": "Context Tools: Copy Markdown Doc" },
+      { "command": "ctxtools.openSettings", "title": "Context Tools: Open Settings" },
+      { "command": "ctxtools.copyProblemsAll", "title": "Context Tools: Copy Problems (All Files)" },
+      { "command": "ctxtools.copyCurrentFileWithProblems", "title": "Context Tools: Copy Current File + Problems" },
+      { "command": "ctxtools.copyOpenEditorsWithProblems", "title": "Context Tools: Copy Open Editors + Problems" }
+    ],
+    "configuration": {
+      "title": "Context Tools",
+      "properties": {
+        "ctxtools.fenceInfoMode": {
+          "type": "string",
+          "default": "path",
+          "enum": ["path", "fullpath", "language", "literal", "format", "none"],
+          "description": "Text after ```/~~~. 'path' = relative path; 'fullpath' = absolute path; 'language' = VS Code language id; 'literal' = uses ctxtools.fenceInfoLiteral; 'format' = uses ctxtools.fenceHeaderTemplate; 'none' = blank header."
+        },
+        "ctxtools.fenceInfoLiteral": {
+          "type": "string",
+          "default": "PATH",
+          "description": "Used only when fenceInfoMode = 'literal'. Example: 'PATH' to produce ``` PATH."
+        },
+        "ctxtools.fenceHeaderTemplate": {
+          "type": "string",
+          "default": "PATH: ${path}",
+          "description": "Template when fenceInfoMode = 'format'. Placeholders: ${path}, ${fullPath}, ${filename}, ${ext}, ${dir}, ${workspace}, ${language}."
+        },
+        "ctxtools.fence.wrapper": {
+          "type": "string",
+          "enum": ["backticks", "tildes", "none"],
+          "default": "backticks",
+          "description": "Fence style: 'backticks' = ```; 'tildes' = ~~~; 'none' = no code block."
+        },
+        "ctxtools.fence.count": {
+          "type": "number",
+          "default": 3,
+          "minimum": 3,
+          "maximum": 5,
+          "description": "Fence character count (3–5)."
+        },
+        "ctxtools.fence.escape": {
+          "type": "boolean",
+          "default": true,
+          "description": "Escape fence sequences inside content to avoid accidental closure."
+        },
+        "ctxtools.copy.importsMode": {
+          "type": "string",
+          "default": "placeholder",
+          "enum": ["keep", "strip", "placeholder"],
+          "description": "How to handle import lines when copying: keep them, strip them, or replace with a placeholder comment at the top."
+        },
+        "ctxtools.copy.importsPlaceholder": {
+          "type": "string",
+          "default": "{ ... imports ... }",
+          "description": "Placeholder text when importsMode = 'placeholder'."
+        },
+        "ctxtools.tree.maxFiles": {
+          "type": "number",
+          "default": 800,
+          "minimum": 50,
+          "description": "Max files scanned when generating the project tree (avoid freezing on huge repos)."
+        },
+        "ctxtools.tree.maxDepth": {
+          "type": "number",
+          "default": 8,
+          "minimum": 1,
+          "description": "Maximum directory depth for the tree."
+        },
+        "ctxtools.tree.exclude": {
+          "type": "string",
+          "default": "{**/node_modules/**,**/.git/**,**/.cache/**,**/dist/**,**/build/**,**/.venv/**,**/*.lock,**/*.png,**/*.jpg,**/*.jpeg,**/*.gif,**/*.svg,**/*.ico,**/*.mp4,**/*.zip,**/*.rar,**/*.7z}",
+          "description": "Base exclude glob while building the tree."
+        },
+        "ctxtools.tree.excludeFolders": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [
+            ".git",
+            "node_modules",
+            "dist",
+            "build",
+            ".cache",
+            ".venv",
+            "__pycache__",
+            ".idea",
+            ".vscode",
+            "coverage",
+            ".pytest_cache",
+            ".mypy_cache",
+            "out",
+            "target",
+            ".next",
+            ".turbo"
+          ],
+          "description": "Folder names to ignore when generating the tree."
+        },
+        "ctxtools.tree.extraExcludeGlobs": {
+          "type": "string",
+          "default": "{**/*.lock,**/*.png,**/*.jpg,**/*.jpeg,**/*.gif,**/*.svg,**/*.ico,**/*.mp4,**/*.zip,**/*.rar,**/*.7z}",
+          "description": "Additional glob patterns to exclude."
+        },
+        "ctxtools.doc.includeTree": {
+          "type": "boolean",
+          "default": true,
+          "description": "Include project tree in the generated Markdown document."
+        },
+        "ctxtools.doc.includeFiles": {
+          "type": "string",
+          "default": "selected-or-open",
+          "enum": ["selected-or-open", "open-editors-only", "selected-only"],
+          "description": "Which files to include in the Markdown doc: selected in Explorer (if any) or open editors; only open editors; or only selected."
+        },
+        "ctxtools.doc.title": {
+          "type": "string",
+          "default": "${workspace} Context",
+          "description": "Title for the Markdown document. Placeholders: ${workspace}."
+        }
+      }
+    },
+    "keybindings": [
+      { "command": "ctxtools.copyCurrentFileAsFence", "key": "ctrl+alt+c", "mac": "cmd+alt+c", "when": "editorTextFocus" },
+      { "command": "ctxtools.copyAllOpenEditorsAsFences", "key": "ctrl+alt+m", "mac": "cmd+alt+m", "when": "editorTextFocus" },
+      { "command": "ctxtools.copyProjectTree", "key": "ctrl+alt+t", "mac": "cmd+alt+t" }
+    ],
+    "menus": {
+      "explorer/context": [
+        { "command": "ctxtools.copySelectedFilesAsFences", "group": "navigation@1" },
+        { "command": "ctxtools.copyMarkdownDocSummary", "group": "navigation@2" },
+        { "command": "ctxtools.openSettings", "group": "navigation@9" }
+      ],
+      "commandPalette": [
+        { "command": "ctxtools.copyCurrentFileAsFence", "when": "editorTextFocus" },
+        { "command": "ctxtools.copySelectionAsFence", "when": "editorTextFocus" },
+        { "command": "ctxtools.copyAllOpenEditorsAsFences", "when": "true" },
+        { "command": "ctxtools.copyProjectTree", "when": "true" },
+        { "command": "ctxtools.copyMarkdownDocSummary", "when": "true" },
+        { "command": "ctxtools.copyProblemsAll", "when": "true" },
+        { "command": "ctxtools.copyCurrentFileWithProblems", "when": "editorTextFocus" },
+        { "command": "ctxtools.copyOpenEditorsWithProblems", "when": "true" },
+        { "command": "ctxtools.openSettings", "when": "true" }
+      ]
+    }
+  },
+  "main": "./dist/extension.js",
+  "scripts": {
+    "compile": "tsc -p .",
+    "watch": "tsc -watch -p .",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.30",
+    "@types/vscode": "^1.90.0",
+    "@vscode/vsce": "^3.0.0",
+    "typescript": "^5.5.3"
+  }
+}

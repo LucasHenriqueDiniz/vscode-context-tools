@@ -1,0 +1,13 @@
+# Exclude sources and dev junk; ship compiled dist only
+.vscode/**
+.vscode-test/**
+.git/**
+.github/**
+**/*.log
+**/*.tsbuildinfo
+
+# Exclude sources/tests/coverage
+src/**
+test/**
+coverage/**
+out/**
