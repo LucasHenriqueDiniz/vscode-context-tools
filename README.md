@@ -43,7 +43,6 @@ When asking for help (or filing a bug), you often need a small stack of files pl
 
 ### File fence
 
-````text
 ``` PATH: src/app/page.tsx
 /* { ... imports ... } */
 
