@@ -3,8 +3,9 @@
   "displayName": "Context Tools: Copy Files, Tree & Problems",
   "description": "Copy current file/selection/open editors as fenced blocks, project tree, and diagnostics (Problems). Optimized for pasting into LLM/chat.",
   "publisher": "lucashenriquediniz",
+  "publisherDisplayName": "LucasHenriqueDiniz",
   "version": "0.0.9",
-  "icon": "images/icon.png",
+  "icon": "images/icon.webp",
   "galleryBanner": {
     "color": "#0f172a",
     "theme": "dark"

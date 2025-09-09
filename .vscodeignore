@@ -1,0 +1,12 @@
+**/.git/**
+**/.github/**
+**/.vscode/**
+**/node_modules/**
+**/.DS_Store
+**/*.map
+out/test/**
+test/**
+src/**
+.vscodeignore
+tsconfig.json
+webpack.config.js

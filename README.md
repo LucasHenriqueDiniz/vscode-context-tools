@@ -2,6 +2,8 @@
 
 LLM-friendly copy utilities for your codebase. Quickly copy the **current file**, **selection**, **all open editors**, the **project tree**, and even **Problems** (diagnostics) — all as tidy fenced blocks that are easy to paste into chats or issues.
 
+[Download](https://marketplace.visualstudio.com/items?itemName=lucashenriquediniz.vscode-context-tools)
+
 ## Why
 
 When asking for help (or filing a bug), you often need a small stack of files plus a sense of the project structure. This extension automates that:
@@ -49,7 +51,7 @@ When asking for help (or filing a bug), you often need a small stack of files pl
 export default function Page() {
   return <div>Hello</div>;
 }
-
+```
 
 ### Problems list
 
@@ -76,7 +78,7 @@ my-project
 
 ## Settings
 
-**Fence header & wrapper**
+### **Fence header & wrapper**
 
 - `ctxtools.fenceInfoMode`: `"path" | "fullpath" | "language" | "literal" | "format" | "none"`  
   _Default:_ `"path"`. Controls the text after ```/~~~ (header).
@@ -88,12 +90,12 @@ my-project
 - `ctxtools.fence.count`: number of fence characters (3–5). _Default:_ `3`.
 - `ctxtools.fence.escape`: escape inner fences to avoid accidental closure. _Default:_ `true`.
 
-**Imports handling (to reduce LLM noise)**
+### **Imports handling (to reduce LLM noise)**
 
 - `ctxtools.copy.importsMode`: `"keep" | "strip" | "placeholder"`. _Default:_ `"placeholder"`.
 - `ctxtools.copy.importsPlaceholder`: placeholder text when using `"placeholder"`. _Default:_ `"{ ... imports ... }"`.
 
-**Project tree**
+### **Project tree**
 
 - `ctxtools.tree.maxFiles`: max files to scan. _Default:_ `800`.
 - `ctxtools.tree.maxDepth`: max directory depth. _Default:_ `8`.
@@ -103,7 +105,7 @@ my-project
   `[".git","node_modules","dist","build",".cache",".venv","__pycache__",".idea",".vscode","coverage",".pytest_cache",".mypy_cache","out","target",".next",".turbo"]`
 - `ctxtools.tree.extraExcludeGlobs`: extra globs to ignore (e.g., images/binaries).
 
-**Markdown doc**
+### **Markdown doc**
 
 - `ctxtools.doc.includeTree`: include the project tree. _Default:_ `true`.
 - `ctxtools.doc.includeFiles`: `"selected-or-open" | "open-editors-only" | "selected-only"`.  
@@ -128,7 +130,7 @@ The extension uses modern TS settings (e.g., `es2021` libs) so methods like `Str
 
 ## Notes & Limitations
 
-- Clipboard is __plain text__. To _attach files_ to chats, drag-and-drop from your OS instead.
+- Clipboard is **plain text**. To **attach files** to chats, drag-and-drop from your OS instead.
 - Very large selections or many open editors produce large clipboards; consider using the Markdown doc command to bundle context more compactly.
 
 ---
