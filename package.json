@@ -4,6 +4,7 @@
   "description": "Copy current file/selection/open editors as fenced blocks, project tree, and diagnostics (Problems). Optimized for pasting into LLM/chat.",
   "publisher": "lucashenriquediniz",
   "publisherDisplayName": "LucasHenriqueDiniz",
+  "author": { "name": "Lucas Henrique Diniz Ostroski", "url": "https://github.com/LucasHenriqueDiniz" },
   "version": "0.0.9",
   "icon": "images/icon.webp",
   "galleryBanner": {
